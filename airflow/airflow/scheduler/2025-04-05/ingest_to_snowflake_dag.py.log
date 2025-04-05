@@ -4395,3 +4395,73 @@ Traceback (most recent call last):
 ModuleNotFoundError: No module named 'bookshop'
 [2025-04-05T17:32:26.305+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ingest_to_snowflake_dag.py
 [2025-04-05T17:32:26.366+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ingest_to_snowflake_dag.py took 0.135 seconds
+[2025-04-05T17:32:56.924+0000] {processor.py:161} INFO - Started process (PID=1335) to work on /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:32:56.926+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ingest_to_snowflake_dag.py for tasks to queue
+[2025-04-05T17:32:56.928+0000] {logging_mixin.py:188} INFO - [2025-04-05T17:32:56.927+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:32:56.982+0000] {logging_mixin.py:188} INFO - [2025-04-05T17:32:56.971+0000] {dagbag.py:348} ERROR - Failed to import: /opt/airflow/dags/ingest_to_snowflake_dag.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/models/dagbag.py", line 344, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/opt/airflow/dags/ingest_to_snowflake_dag.py", line 11, in <module>
+    from bookshop.ingest_postgres_to_snowflake import load_data_to_snowflake  # Vérifier que ce module existe et est accessible
+ModuleNotFoundError: No module named 'bookshop'
+[2025-04-05T17:32:56.984+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:32:57.036+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ingest_to_snowflake_dag.py took 0.118 seconds
+[2025-04-05T17:33:27.403+0000] {processor.py:161} INFO - Started process (PID=1340) to work on /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:33:27.405+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ingest_to_snowflake_dag.py for tasks to queue
+[2025-04-05T17:33:27.408+0000] {logging_mixin.py:188} INFO - [2025-04-05T17:33:27.407+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:33:27.454+0000] {logging_mixin.py:188} INFO - [2025-04-05T17:33:27.449+0000] {dagbag.py:348} ERROR - Failed to import: /opt/airflow/dags/ingest_to_snowflake_dag.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/models/dagbag.py", line 344, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/opt/airflow/dags/ingest_to_snowflake_dag.py", line 11, in <module>
+    from bookshop.ingest_postgres_to_snowflake import load_data_to_snowflake  # Vérifier que ce module existe et est accessible
+ModuleNotFoundError: No module named 'bookshop'
+[2025-04-05T17:33:27.457+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:33:27.507+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ingest_to_snowflake_dag.py took 0.130 seconds
+[2025-04-05T17:33:58.195+0000] {processor.py:161} INFO - Started process (PID=1345) to work on /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:33:58.197+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ingest_to_snowflake_dag.py for tasks to queue
+[2025-04-05T17:33:58.199+0000] {logging_mixin.py:188} INFO - [2025-04-05T17:33:58.199+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:33:58.260+0000] {logging_mixin.py:188} INFO - [2025-04-05T17:33:58.251+0000] {dagbag.py:348} ERROR - Failed to import: /opt/airflow/dags/ingest_to_snowflake_dag.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/models/dagbag.py", line 344, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/opt/airflow/dags/ingest_to_snowflake_dag.py", line 11, in <module>
+    from bookshop.ingest_postgres_to_snowflake import load_data_to_snowflake  # Vérifier que ce module existe et est accessible
+ModuleNotFoundError: No module named 'bookshop'
+[2025-04-05T17:33:58.263+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:33:58.314+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ingest_to_snowflake_dag.py took 0.123 seconds
+[2025-04-05T17:34:29.091+0000] {processor.py:161} INFO - Started process (PID=1350) to work on /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:34:29.093+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ingest_to_snowflake_dag.py for tasks to queue
+[2025-04-05T17:34:29.095+0000] {logging_mixin.py:188} INFO - [2025-04-05T17:34:29.095+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:34:29.157+0000] {logging_mixin.py:188} INFO - [2025-04-05T17:34:29.147+0000] {dagbag.py:348} ERROR - Failed to import: /opt/airflow/dags/ingest_to_snowflake_dag.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/models/dagbag.py", line 344, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/opt/airflow/dags/ingest_to_snowflake_dag.py", line 11, in <module>
+    from bookshop.ingest_postgres_to_snowflake import load_data_to_snowflake  # Vérifier que ce module existe et est accessible
+ModuleNotFoundError: No module named 'bookshop'
+[2025-04-05T17:34:29.161+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:34:29.237+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ingest_to_snowflake_dag.py took 0.154 seconds
+[2025-04-05T17:34:59.896+0000] {processor.py:161} INFO - Started process (PID=1355) to work on /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:34:59.899+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ingest_to_snowflake_dag.py for tasks to queue
+[2025-04-05T17:34:59.902+0000] {logging_mixin.py:188} INFO - [2025-04-05T17:34:59.901+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:35:00.102+0000] {logging_mixin.py:188} INFO - [2025-04-05T17:35:00.090+0000] {dagbag.py:348} ERROR - Failed to import: /opt/airflow/dags/ingest_to_snowflake_dag.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/models/dagbag.py", line 344, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/opt/airflow/dags/ingest_to_snowflake_dag.py", line 11, in <module>
+    from bookshop.ingest_postgres_to_snowflake import load_data_to_snowflake  # Vérifier que ce module existe et est accessible
+ModuleNotFoundError: No module named 'bookshop'
+[2025-04-05T17:35:00.105+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ingest_to_snowflake_dag.py
+[2025-04-05T17:35:00.836+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ingest_to_snowflake_dag.py took 0.948 seconds

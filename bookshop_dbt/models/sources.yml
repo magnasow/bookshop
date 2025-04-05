@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: RAW
+    database: BOOKSHOP
+    schema: RAW
+    tables:
+      - name: BOOKS
+        description: "Table des livres bruts dans le schéma RAW"
+      - name: CUSTOMERS
+        description: "Table des clients bruts dans le schéma RAW"
+      - name: CATEGORY
+        description: "Table des catégories brutes dans le schéma RAW"
+      - name: FACTURES
+        description: "Table des factures brutes dans le schéma RAW"
+      - name: VENTES
+        description: "Table des ventes brutes dans le schéma RAW"

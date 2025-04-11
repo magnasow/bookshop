@@ -3,9 +3,9 @@
 
 
 SELECT 
-    books_id,
-    TO_CHAR(TO_DATE(TO_CHAR(date_edit)), 'FMDay') AS jour,
-    SUM(qte) AS total_qte_vendue
+    book_id,
+    TO_CHAR(TO_DATE(TO_CHAR(sale_date)), 'FMDay') AS jour,
+    SUM(quantity) AS quantity
 FROM {{ ref('stg_ventes') }}
-GROUP BY books_id, jour
+GROUP BY book_id, jour
 

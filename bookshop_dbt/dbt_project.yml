@@ -1,4 +1,3 @@
-# Nom du projet
 name: bookshop_dbt
 version: '1.0.0'
 profile: bookshop
@@ -19,43 +18,12 @@ clean-targets:
 # Configuration des modèles et des schémas
 models:
   bookshop_dbt:
-    # Schéma pour les étapes de transformation des données
-    STAGGING:
+    stagging:
+      +schema: stagging
       +materialized: table
-      # Tables spécifiques au schéma STAGGING
-      stg_ventes:
-        +materialized: table
-      stg_factures:
-        +materialized: table
-      stg_category:
-        +materialized: table
-      stg_books:
-        +materialized: table
-      stg_customers:
-        +materialized: table
-
-    WAREHOUSE:
+    warehouse:
+      +schema: warehouse
       +materialized: table
-      # Tables spécifiques au schéma WAREHOUSE
-      dim_customers:
-        +materialized: table
-      dim_category:
-        +materialized: table
-      dim_books:
-        +materialized: table
-      fact_ventes:
-        +materialized: table
-      fact_factures:
-        +materialized: table
-      fact_books_annees:
-        +materialized: table
-      fact_books_mois:
-        +materialized: table
-      fact_books_jour:
-        +materialized: table
-
-    MARTS:
+    marts:
+      +schema: marts
       +materialized: table
-      # Tables spécifiques au schéma MARTS
-      obt_sales:
-        +materialized: table

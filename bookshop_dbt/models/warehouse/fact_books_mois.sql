@@ -2,8 +2,8 @@
 {{ config(materialized='table',schema='warehouse')}}
 
 SELECT 
-    books_id,
-    TO_CHAR(TO_DATE(TO_CHAR(date_edit)), 'FMMonth') AS mois,
-    SUM(qte) AS total_qte_vendue
+    book_id,
+    TO_CHAR(TO_DATE(TO_CHAR(sale_date)), 'FMMonth') AS mois,
+    SUM(quantity) AS quantity
 FROM {{ ref('stg_ventes') }}
-GROUP BY books_id, mois
+GROUP BY book_id, mois

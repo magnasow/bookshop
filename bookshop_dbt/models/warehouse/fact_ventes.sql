@@ -4,16 +4,15 @@
 
 WITH base AS (
     SELECT 
-        id,
-        code,
-        factures_id,
-        books_id,
-        pu,
-        qte,
-        TO_DATE(TO_CHAR(date_edit)) AS date_ventes,
-        EXTRACT(YEAR FROM TO_DATE(TO_CHAR(date_edit))) AS annees,
-        TO_CHAR(TO_DATE(TO_CHAR(date_edit)), 'FMMonth') AS mois,
-        TO_CHAR(TO_DATE(TO_CHAR(date_edit)), 'FMDay') AS jour
+        sale_id,
+        customer_id,
+        book_id,
+        quantity,
+        total_amount,
+        TO_DATE(TO_CHAR( sale_date)) AS  sale_date,
+        EXTRACT(YEAR FROM TO_DATE(TO_CHAR( sale_date))) AS annees,
+        TO_CHAR(TO_DATE(TO_CHAR( sale_date)), 'FMMonth') AS mois,
+        TO_CHAR(TO_DATE(TO_CHAR( sale_date)), 'FMDay') AS jour
     FROM {{ ref('stg_ventes') }}
 )
 

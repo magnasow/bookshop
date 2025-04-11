@@ -3,8 +3,8 @@
 
 
 SELECT 
-    books_id,
-    EXTRACT(YEAR FROM TO_DATE(TO_CHAR(date_edit))) AS annees,
-    SUM(qte) AS total_qte_vendue
+    book_id,
+    EXTRACT(YEAR FROM TO_DATE(TO_CHAR(sale_date))) AS annees,
+    SUM(quantity) AS quantity
 FROM {{ ref('stg_ventes') }}
-GROUP BY books_id, annees
+GROUP BY book_id, annees

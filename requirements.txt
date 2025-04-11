@@ -1,5 +1,5 @@
 streamlit==1.16.0
 pandas==1.5.3
-numpy>=1.26.0  # Compatible with Python 3.12
-pyarrow>=14.0.0  # Compatible with Python 3.12
-snowflake-connector-python>=3.0.0  # Compatible with newer Python versions
+numpy>=1.26
+pyarrow>=14.0.0
+snowflake-connector-python>=3.0.0

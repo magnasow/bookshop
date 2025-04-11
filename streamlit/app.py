@@ -1,15 +1,10 @@
-# streamlit_app.py
-
 import streamlit as st
-import snowflake.connector
 import pandas as pd
+import matplotlib.pyplot as plt
+import snowflake.connector
+import pyarrow as pa
+from sqlalchemy import create_engine
 
-# --- Titre ---
-st.set_page_config(page_title="BookShop Dashboard", layout="wide")
-st.title("📚 Dashboard BookShop - Ventes & Clients")
-
-# --- Initialisation de df vide ---
-df = pd.DataFrame()
 
 # --- Connexion à Snowflake ---
 try:
@@ -19,123 +14,136 @@ try:
         account='bivpnnj-vd86335',
         warehouse='COMPUTE_WH',
         database='BOOKSHOP',
-        schema='STAGGING_MARTS'
+        schema='BOOKSHOP_MARTS',
+        role='ACCOUNTADMIN'
     )
+
+    # Titre principal avec une icône avant
+    st.markdown("""
+      <h1 style="text-align: center;">
+        📚 <span style="color: #1E90FF;">DASHBOARD BOOKSHOP VENTE et CLIENTS</span> 📊
+      </h1>
+    """, unsafe_allow_html=True)
     st.success("Connexion à Snowflake réussie.")
 except Exception as e:
     st.error(f"Erreur de connexion à Snowflake : {str(e)}")
     conn = None
 
-# --- Chargement des données ---
-query = "SELECT * FROM obt_sales"
-
-try:
-    if conn:
-        df = pd.read_sql(query, conn)
-        if df.empty:
-            st.warning("⚠️ Aucune donnée dans Snowflake. Chargement local...")
-            df = pd.read_csv("data/Books_Data_Clean.csv")
-            st.success("✅ Données locales chargées.")
-except Exception:
-    st.warning("⚠️ Erreur Snowflake. Chargement local...")
-    try:
-        df = pd.read_csv("data/Books_Data_Clean.csv")
-        st.success("✅ Données locales chargées.")
-    except Exception as err:
-        st.error(f"❌ Impossible de charger les données locales : {str(err)}")
-
-# --- Si données chargées ---
-if not df.empty:
-    df.columns = df.columns.str.strip().str.lower()  # standardisation
-
-    # --- Barre latérale : Filtres ---
-    st.sidebar.header("🎛️ Filtres dynamiques")
-
-    annees = sorted(df["publishing year"].dropna().unique())
-    auteurs = sorted(df["author"].dropna().unique())
-    genres = sorted(df["genre"].dropna().unique())
-    langues = sorted(df["language_code"].dropna().unique())
-
-    annee_selection = st.sidebar.multiselect("Année", annees)
-    auteur_selection = st.sidebar.multiselect("Auteur", auteurs)
-    genre_selection = st.sidebar.multiselect("Genre", genres)
-    langue_selection = st.sidebar.multiselect("Langue", langues)
-
-    # --- Recherche ---
-    st.sidebar.markdown("### 🔍 Recherche livre / auteur")
-    search_query = st.sidebar.text_input("Mot-clé")
-
-    # --- Application des filtres ---
-    df_filtré = df.copy()
-    if annee_selection:
-        df_filtré = df_filtré[df_filtré["publishing year"].isin(annee_selection)]
-    if auteur_selection:
-        df_filtré = df_filtré[df_filtré["author"].isin(auteur_selection)]
-    if genre_selection:
-        df_filtré = df_filtré[df_filtré["genre"].isin(genre_selection)]
-    if langue_selection:
-        df_filtré = df_filtré[df_filtré["language_code"].isin(langue_selection)]
-    if search_query:
-        df_filtré = df_filtré[
-            df_filtré["book name"].str.contains(search_query, case=False, na=False)
-            | df_filtré["author"].str.contains(search_query, case=False, na=False)
-        ]
-
-    # --- KPIs ---
-    st.subheader("📊 Indicateurs clés")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("💰 CA total", f"${df_filtré['gross sales'].sum():,.2f}")
-    col2.metric("📚 Livres vendus", int(df_filtré["units sold"].sum()))
-    col3.metric("⭐ Note moyenne", round(df_filtré["book_average_rating"].mean(), 2))
-
-    # --- Aperçu données ---
-    with st.expander("🧐 Aperçu des données filtrées"):
-        st.dataframe(df_filtré.head(20))
-
-    # --- Top 10 livres les plus vendus ---
-    if "book name" in df.columns and "units sold" in df.columns:
-        st.subheader("📖 Top 10 livres les plus vendus")
-        top_books = (
-            df_filtré.groupby("book name")["units sold"]
-            .sum()
-            .sort_values(ascending=False)
-            .head(10)
-        )
-        st.bar_chart(top_books)
-
-    # --- Ventes par genre ---
-    if "genre" in df.columns:
-        st.subheader("🎯 Ventes par genre")
-        genre_sales = (
-            df_filtré.groupby("genre")["units sold"]
-            .sum()
-            .sort_values(ascending=False)
-        )
-        st.bar_chart(genre_sales)
-
-    # --- Ventes par année ---
-    if "publishing year" in df.columns:
-        st.subheader("📅 Ventes par année")
-        year_sales = (
-            df_filtré.groupby("publishing year")["units sold"]
-            .sum()
-            .sort_index()
-        )
-        st.line_chart(year_sales)
-
-    # --- Export CSV ---
-    st.subheader("📥 Exporter les données")
-    csv = df_filtré.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        label="📁 Télécharger les données filtrées (CSV)",
-        data=csv,
-        file_name="donnees_filtrees_bookshop.csv",
-        mime="text/csv",
-    )
-
-else:
-    st.warning("⚠️ Aucune donnée à afficher.")
-
-# --- Fermeture de connexion ---
+# Charger les données depuis Snowflake
 if conn:
-    conn.close()
+    try:
+        # Exécuter une requête SQL pour obtenir les données
+        query = "SELECT * FROM obt_sales"  # Remplacer 'obt_sales' par le nom de la table que vous souhaitez charger
+        df = pd.read_sql(query, conn)
+        
+        # Nettoyage des noms de colonnes (pour éviter les erreurs)
+        df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+        df = df.dropna()
+
+        # Convertir les colonnes en types appropriés avant de les afficher
+        for col in df.select_dtypes(include=['object']).columns:
+            df[col] = df[col].astype(str)
+
+        # Affichage des données récupérées
+        st.write("### Aperçu des données récupérées depuis Snowflake :")
+        st.write(df)
+    except Exception as e:
+        st.error(f"Erreur lors de l'exécution de la requête SQL : {str(e)}")
+else:
+    st.error("Impossible de se connecter à Snowflake.")
+
+
+# Affichage des premières lignes pour vérifier les données dans 'intitule_book' et 'qte'
+st.write("### Aperçu des premières lignes :")
+st.write(df[['title', 'qte']].head())
+
+# Exemple de calcul du montant total pour chaque vente
+if 'total_amount' in df.columns and 'qte' in df.columns:
+    df['total_montant'] = df['qte'] * df['total_amount']
+    st.write("### Données avec le calcul du montant total :")
+    st.write(df[['sale_id', 'total_montant']])  # Affiche les ID de vente et les montants totaux
+else:
+    st.error("⚠️ Les colonnes 'total_amount' ou 'qte' sont manquantes.")
+
+# Affichage d'un graphique de la distribution des ventes par année
+if 'annees' in df.columns:
+    ventes_par_annee = df.groupby('annees')['sale_id'].count()
+
+    # Affichage sous forme de graphique à barres
+    st.write("### Distribution des ventes par année :")
+    st.bar_chart(ventes_par_annee)
+
+    # Optionnel : Amélioration avec un graphique Matplotlib plus détaillé
+    fig, ax = plt.subplots()
+    ventes_par_annee.plot(kind='bar', ax=ax, color='skyblue')
+    ax.set_title('Distribution des ventes par année')
+    ax.set_xlabel('Année')
+    ax.set_ylabel('Nombre de ventes')
+    st.pyplot(fig)  # Afficher le graphique matplotlib
+else:
+    st.error("⚠️ La colonne 'annees' est nécessaire pour l'affichage de la distribution des ventes.")
+
+# Liste des livres les plus vendus
+if 'title' in df.columns and 'qte' in df.columns:
+    st.write("### 📖 Liste des livres les plus vendus :")
+
+    # Supprimer les lignes où 'intitule_book' ou 'qte' sont manquants
+    df_clean = df.dropna(subset=['title', 'qte'])
+    
+    
+
+   
+
+    # Regrouper par titre du livre (intitule_book) et somme des quantités vendues (qte)
+    livres_plus_vendus = df_clean.groupby('title')['qte'].sum().sort_values(ascending=False).reset_index()
+
+   
+
+    # Si le regroupement contient des résultats
+    if not livres_plus_vendus.empty:
+        livres_plus_vendus.columns = ['Titre du Livre', 'Quantité Vendue']
+        
+        # Affichage du tableau
+        st.dataframe(livres_plus_vendus)
+
+        # Affichage du graphique
+        fig2, ax2 = plt.subplots(figsize=(10, 6))
+        top_n = 10  # Nombre de livres à afficher dans le graphique
+        ax2.barh(livres_plus_vendus['Titre du Livre'][:top_n], livres_plus_vendus['Quantité Vendue'][:top_n], color='lightcoral')
+        ax2.invert_yaxis()  # Pour avoir le livre le plus vendu en haut
+        ax2.set_title('Top 10 des livres les plus vendus')
+        ax2.set_xlabel('Quantité Vendue')
+        ax2.set_ylabel('Titre du Livre')
+
+        st.pyplot(fig2)
+    else:
+        st.warning("Aucun livre trouvé après le regroupement.")
+else:
+    st.warning("Les colonnes 'intitule_book' et/ou 'qte' sont absentes pour générer la liste des livres les plus vendus.")
+
+# Message de confirmation
+st.markdown("### Les données sont prêtes pour le téléchargement !")
+
+# Fonction pour télécharger le fichier CSV
+def convert_df_to_csv(df):
+    return df.to_csv(index=False).encode('utf-8')
+
+# Ajout du bouton de téléchargement du fichier CSV
+csv = convert_df_to_csv(df)
+st.download_button(
+    label="Télécharger le fichier CSV",
+    data=csv,
+    file_name='ventes_data.csv',
+    mime='text/csv'
+)
+
+# Convertir le DataFrame en un tableau Arrow pour Streamlit
+try:
+    # Convertir toutes les colonnes en string explicite
+    df = df.apply(lambda x: x.astype(str) if x.dtype == 'object' else x)
+
+    # Convertir le DataFrame en tableau Arrow
+    table = pa.Table.from_pandas(df)
+    st.write("Tableau Arrow créé avec succès!")
+except Exception as e:
+    st.error(f"Erreur lors de la conversion du DataFrame en tableau Arrow : {e}")

@@ -1,15 +1,15 @@
 -- models/warehouse/dim_customers.sql
-{{ config(materialized='table',schema='warehouse')}}
-
+{{ config(materialized='table', schema='warehouse') }}
 
 WITH base AS (
     SELECT 
-        id,
-        code,
-        first_name,
-        last_name,
-        CONCAT(first_name, ' ', last_name) AS nom
-    FROM {{ ref('stg_customers') }}
+        customer_id,
+        email,
+        gender,
+        birthdate,
+        country,
+        CONCAT(name, ' ') AS nom  -- Concatène le champ name avec un espace
+    FROM {{ ref('stg_customers') }}  -- Récupère les données de la table stagging
 )
 
 SELECT * FROM base

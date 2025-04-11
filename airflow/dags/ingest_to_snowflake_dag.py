@@ -3,13 +3,15 @@ from airflow.operators.python import PythonOperator  # Correct import
 from datetime import datetime, timedelta  # Tu as oublié timedelta
 from airflow.hooks.base import BaseHook  # Correct import
 from dotenv import load_dotenv
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/.."))
 
 # Charger les variables d'environnement
 load_dotenv()
 
 # Importer la fonction d'ingestion
-from bookshop.ingest_postgres_to_snowflake import load_data_to_snowflake  # Vérifier que ce module existe et est accessible
-
+from bookshop_dbt.ingest_postgres_to_snowflake import load_data_to_snowflake  
 # Définir le DAG
 default_args = {
     'owner': 'airflow',

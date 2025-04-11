@@ -13,5 +13,5 @@ sources:
         description: "Table des catégories brutes dans le schéma RAW"
       - name: FACTURES
         description: "Table des factures brutes dans le schéma RAW"
-      - name: VENTES
+      - name: SALES
         description: "Table des ventes brutes dans le schéma RAW"

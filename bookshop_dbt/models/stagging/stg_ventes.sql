@@ -1,19 +1,13 @@
--- models/stagging/stg_ventes.sql
-
-{{ config(materialized='table') }}
-
-WITH raw_ventes AS (
+WITH raw_sales AS (
     SELECT 
-        id, 
-        code, 
-        TO_DATE(date_edit, 'YYYYMMDD') AS date_edit,  -- Transformation de date_edit en DATE
-        factures_id, 
-        books_id , 
-        pu , 
-        qte , 
-        created_at
-    FROM {{ source('RAW', 'VENTES') }}
+        sale_id, 
+        book_id,
+        customer_id, 
+        TO_DATE(sale_date, 'YYYY-MM-DD') AS sale_date,  -- Conversion du format si nécessaire
+        quantity, 
+        total_amount
+    FROM {{ source('RAW', 'SALES') }}
 )
 SELECT * 
-FROM raw_ventes
-WHERE date_edit IS NOT NULL
+FROM raw_sales
+WHERE sale_date IS NOT NULL  -- Assurer qu'il n'y a pas de dates NULL

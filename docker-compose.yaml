@@ -11,12 +11,12 @@ x-airflow-common:
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
     _AIRFLOW_WWW_USER_USERNAME: airflow
     _AIRFLOW_WWW_USER_PASSWORD: airflow
-    PYTHONPATH: /opt/airflow/dags:/opt/airflow/bookshop
+    PYTHONPATH: /opt/airflow/dags:/opt/airflow/bookshop_dbt
   volumes:
     - ./airflow/dags:/opt/airflow/dags
     - ./airflow:/opt/airflow/logs
     - ./dbt:/opt/dbt
-    - ./bookshop:/opt/airflow/bookshop   # 🔥 Monte ton dossier "bookshop" ici
+    - ./bookshop_dbt:/opt/airflow/bookshop_dbt   # 🔥 Monte ton dossier "bookshop" ici
   depends_on:
     - postgres
 

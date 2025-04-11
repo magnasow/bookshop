@@ -6,7 +6,7 @@ WITH base AS (
     SELECT 
         id,
         code,
-        customers_id,
+        customer_id,
         qte_totale,
         total_amount,
         total_paid,

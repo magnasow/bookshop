@@ -6,8 +6,8 @@ WITH raw_factures AS (
     SELECT 
         id, 
         code AS code, 
-        TO_DATE(date_edit, 'YYYYMMDD') AS date_edit,  -- Conversion de date_edit en DATE
-        customers_id, 
+        TO_DATE(date_edit, 'YYYY-MM-DD') AS date_edit,  -- Utilisation du format 'YYYY-MM-DD'
+        customer_id, 
         qte_totale, 
         total_amount, 
         total_paid, 
